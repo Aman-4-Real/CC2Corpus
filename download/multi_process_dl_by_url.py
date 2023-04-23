@@ -136,7 +136,7 @@ def main():
         all_wets = f.readlines()
     all_wets = [w.strip() for w in all_wets]
     print(f"Total wet files: {len(all_wets)}")
-    all_wets = all_wets[args.start:args.end]
+    all_wets = all_wets[args.start:args.end] if args.end != -1 else all_wets[args.start:]
     # assert args.start % 10000 == 0 and args.end % 10000 == 0, "Start and end must be multiples of 10000!"
     # print(f"Downloading from {args.start//10000}w to {args.end//10000}w...")
     print(f"Downloading from {args.start} to {args.end}...")
