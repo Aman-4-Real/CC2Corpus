@@ -3,7 +3,7 @@ Author: Aman
 Date: 2023-04-10 15:53:34
 Contact: cq335955781@gmail.com
 LastEditors: Aman
-LastEditTime: 2023-04-26 14:58:04
+LastEditTime: 2023-07-06 22:39:56
 '''
 from typing import List, Dict
 from pathlib import Path
@@ -179,7 +179,7 @@ class DocCleaner:
 
             ### 3. remove paras that contain mess code
             if '�' in para:
-                continue
+                para = para.replace('�', '')
 
             ### 4. remove paras with less than 3 words
             word_list= list(filter(None, map(str.strip, para.split())))
@@ -190,6 +190,11 @@ class DocCleaner:
             avg_word_len = sum(len(word) for word in word_list)/len(word_list)
             if avg_word_len < 3 or avg_word_len > 10:
                 continue
+
+            ### 6. remove paras with messy code
+            para = re.sub(r"[\x00-\x1F\x7F]", "", para)
+            para = re.sub(r"[\u2002\u2003\u3000]", " ", para)
+            
             #######################################################
             cleaned_content += para + '\n'
             multi_next_row_count = 0

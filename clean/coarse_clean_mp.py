@@ -3,7 +3,7 @@ Author: Aman
 Date: 2023-04-06 22:13:01
 Contact: cq335955781@gmail.com
 LastEditors: Aman
-LastEditTime: 2023-04-26 14:52:33
+LastEditTime: 2023-07-06 22:38:56
 '''
 import argparse
 import multiprocessing
@@ -188,6 +188,16 @@ def main():
                 all_wet_paths.append(os.path.join(root, file))
     all_wet_paths = all_wet_paths
     print(f"Total wet files: {len(all_wet_paths)}")
+
+    unclean_data = []
+    for file in all_wet_paths:
+        filename = file.split('/')[-1].rstrip('.gz')
+        if os.path.exists(args.output_path + filename):
+            continue
+        else:
+            unclean_data.append(file)
+    all_wet_paths = unclean_data
+    print("Total unprocessed files:", len(all_wet_paths))
 
     mapper = MyMultiProcess(MyFunction, args.num_workers)
     res = mapper(inputs=all_wet_paths)
