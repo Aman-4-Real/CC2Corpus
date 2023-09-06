@@ -44,14 +44,15 @@ class DocCleaner:
         ### This part of the code is used to remove those words b, because 
         ###   when removing documents containing words a, those containing words b have been removed.
         ##########################################################################################
+
         dirty_word_dict = {} # key: word K, value: the subword of word K in the list with the minimum length
         for word in dirty_word_list:
-            tmp_value = word
+            tmp_value = len(word)
             for each in dirty_word_list:
-                if each in word and len(each) < len(word): # get the minimum length subword
-                    tmp_value = each
-            dirty_word_dict[word] = tmp_value
-        dirty_word_efficient = [value for key, value in dirty_word_dict.items()]
+                if each in word and len(each) <= tmp_value: # get the minimum length subword
+                    tmp_value = len(each)
+                    dirty_word_dict[word] = each
+        dirty_word_efficient = list(set([value for key, value in dirty_word_dict.items()]))
         dirty_word_efficient = ['{', '}', 'javascript', 'lorem ipsum'] + dirty_word_efficient
         # print(f'Loaded {len(dirty_word_efficient)} dirty words. {dirty_word_efficient[:20]}'); exit()
         
